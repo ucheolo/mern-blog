@@ -5,7 +5,7 @@ import { UserContext } from "../UserContext";
 export default function LoginPage(){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [redirect, setRedirect] = useState('');
+  const [redirect, setRedirect] = useState(false);
   const {setUserInfo} = useContext(UserContext);
 
   async function login(ev){
