@@ -1,23 +1,7 @@
 import { useState } from "react";
-import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { Navigate } from "react-router-dom";
-
-const modules = {
-  toolbar: [
-    [{ 'header': [1, 2, false] }],
-    ['bold', 'italic', 'underline','strike', 'blockquote'],
-    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-    ['link', 'image'],
-    ['clean']
-  ]
-};
-const formats = [
-  'header',
-  'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'list', 'bullet', 'indent',
-  'link', 'image'
-];
+import Editor from "../Editor";
 
 export default function CreatePost(){
   const [title, setTitle] = useState('');
@@ -36,6 +20,8 @@ export default function CreatePost(){
     const response = await fetch('http://localhost:4000/post', {
       method: 'POST',
       body: data, 
+      //fetch 요청을 보낼 때 요청 헤더에 쿠키나 인증 토큰과 같은 정보를 함께 보낸다.
+      credentials: 'include',
     });
     if(response.ok){
       setRedirect(true);
@@ -58,11 +44,7 @@ export default function CreatePost(){
         value={summary}
         onChange={ev => setSummary(ev.target.value)}/>
       <input type="file" onChange={ev => setFiles(ev.target.files)}/>
-      <ReactQuill 
-        value={content} 
-        onChange={newValue => setContent(newValue)} 
-        modules={modules} 
-        formats={formats}/>
+      <Editor onChange={setContent} value={content} />
       <button style={{marginTop:'5px'}}>Create Post</button>
     </form>
   );
